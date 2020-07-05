@@ -1,0 +1,33 @@
+.searchbar {
+    position: relative; 
+    display: flex;
+    color: white;
+
+    input {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid white;
+    color: white;
+    max-width: 90%;
+    font-size: 1.2rem;
+
+        &:focus {
+            border: 0px solid transparent;
+            border-bottom: 3px solid white;
+            outline: none;
+
+        }
+        
+        &::placeholder {
+            color: whitesmoke;
+        }
+    }
+
+}
+
+span {
+    position: absolute; 
+    right: 0;
+    top: 0;
+    color: white;
+}
