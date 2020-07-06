@@ -9,7 +9,7 @@ class SearchBar extends Component {
     render() { 
         return (
             <div className={styles.searchbar}>
-                <input type='text' onChange={this.props.handleSearch} placeholder="Search Artist"/>
+                <input type='text' onChange={this.props.fetchArtistData} placeholder="Search Artist"/>
                 <FontAwesomeIcon icon={faSearch} />
             </div>
           );

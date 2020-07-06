@@ -1,40 +1,15 @@
 import React, { Component } from 'react';
 import './App.module.scss';
 import Nav from './components/Nav';
-import Body from './components/Body';
+import SearchResult from './components/SearchResult';
 
 
 class App extends Component {
     state = {
-        searchTerm: '',
         token: '',
-        object: '',
-        lyrics: ''
-    }
-
-    handleSearch = (event) => {
-        this.setState({
-            searchTerm: event.target.value,
-        })
-        // this.requestData(this.state.searchTerm)
-    }
-
-    fetchLyrics = () =>{
-        fetch('https://api.lyrics.ovh/v1/Queen/Bohemian+Rhapsody')
-            // .then(response => {
-            //     console.log(response.json())
-            //     return response.json();
-            // })
-            .then(responseJSON => {
-                console.log(responseJSON);
-                // this.setLyrics(responseJSON.lyrics);
-            })
-    }
-
-    setLyrics = (newLyrics) =>{
-        this.setState({
-            lyrics: newLyrics,
-        })
+        artistData: [],
+        albumData: [],
+        songData: []
     }
 
     componentDidMount() {
@@ -52,45 +27,60 @@ class App extends Component {
         
         fetch("https://accounts.spotify.com/api/token", requestOptions)
         .then(response => response.json())
-        .then(result => this.state.token = result.access_token)
+        .then(result => this.setState({
+            token: result.access_token,
+        }))
         .catch(error => console.log('error', error));
     }
 
-    requestData = (searchTerm) => {
-        return fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=5`, {
+    fetchArtistData = (event) => {
+        let searchTerm = event.target.value.split(' ').join('+');
+        fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=10`, {
             headers: {
                 'Authorization': `Bearer ${this.state.token}`,
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
             })
             .then(response => response.json())
-            .then(result => this.extractObject(result.artists.items))
+            .then(result => this.setState({
+                artistData: result.artists.items
+            }))
             .catch((err) => console.log('error', err))
     }
 
-    extractObject = (object) => {
-        return object.map(item => item.name)
-        // for (let i = 0; i < object.length; i++) {
-        //     // console.log(object[i].name);
-        //     return (
-        //         object[i].name
-        //         // <div>
-        //         //     <h2>{object[i].name}</h2>
-        //             /* <img src={object[i].images[0].url} alt="artist-image" />
-        //         <p>{object[i].genres.join(', ')}</p> */
-        //         // </div>
-        //     )}
+    fetchAlbumData = (event) => {
+        fetch(`https://api.spotify.com/v1/artists/${event.target.getAttribute('value')}/albums`, {
+            headers: {
+                'Authorization': `Bearer ${this.state.token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            })
+            .then(response => response.json())
+            .then(result => this.setState({
+                albumData: result.items
+            }))
+            .catch((err) => console.log('error', err))
+    }
+
+    fetchSongData = (event) => {
+        fetch(`https://api.spotify.com/v1/albums/${event.target.getAttribute('value')}/tracks`, {
+            headers: {
+                'Authorization': `Bearer ${this.state.token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            })
+            .then(response => response.json())
+            .then(result => this.setState({
+                songData: result.items
+            }))
+            .catch((err) => console.log('error', err))
     }
 
     render() { 
-        let output = this.requestData(this.state.searchTerm).then(response => response);
-        console.log(output)
-        this.fetchLyrics()
         return (
             <>
-                <Nav handleSearch={this.handleSearch}/>
-                <Body object={this.state.object} lyrics={this.state.lyrics}/>
-                {/* {output} */}
+                <Nav fetchArtistData={this.fetchArtistData}/>
+                <SearchResult artistData={this.state.artistData} albumData={this.state.albumData} fetchAlbumData={this.fetchAlbumData} fetchSongData={this.fetchSongData} songData={this.state.songData} />
             </>
           );
     }

@@ -8,7 +8,7 @@ class Nav extends Component {
         return (
             <header className={styles.nav}>
                 <h1>Spotify Song Search</h1>
-                <SearchBar handleSearch={this.props.handleSearch}/>
+                <SearchBar fetchArtistData={this.props.fetchArtistData}/>
             </header>
           );
     }
