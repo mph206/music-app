@@ -5,9 +5,9 @@ class Albums extends Component {
 
     // find a way for to only need to set value on div
     buildAlbumData = () => {
-        return this.props.albumData.map(album => {
+        return this.props.albumData.map((album) => {
             return (
-                <div key={album.id} value={album.id} onClick={this.props.fetchSongData}>
+                <div key={album.id}  value={album.id} onClick={this.props.fetchSongData}>
                     <h2 value={album.id}>{album.name}</h2>
                 </div>
             )

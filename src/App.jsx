@@ -9,7 +9,8 @@ class App extends Component {
         token: '',
         artistData: [],
         albumData: [],
-        songData: []
+        songData: [],
+        selectedArtist: ''
     }
 
     componentDidMount() {
@@ -34,7 +35,7 @@ class App extends Component {
     }
 
     fetchArtistData = (event) => {
-        let searchTerm = event.target.value.split(' ').join('+');
+        const searchTerm = event.target.value.split(' ').join('+');
         fetch(`https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=10`, {
             headers: {
                 'Authorization': `Bearer ${this.state.token}`,
@@ -49,6 +50,7 @@ class App extends Component {
     }
 
     fetchAlbumData = (event) => {
+        const artistIndex = event.target.getAttribute('artist-index');
         fetch(`https://api.spotify.com/v1/artists/${event.target.getAttribute('value')}/albums`, {
             headers: {
                 'Authorization': `Bearer ${this.state.token}`,
@@ -57,7 +59,8 @@ class App extends Component {
             })
             .then(response => response.json())
             .then(result => this.setState({
-                albumData: result.items
+                albumData: result.items,
+                selectedArtist: this.state.artistData[artistIndex].name
             }))
             .catch((err) => console.log('error', err))
     }
@@ -70,9 +73,7 @@ class App extends Component {
             }
             })
             .then(response => response.json())
-            .then(result => this.setState({
-                songData: result.items
-            }))
+            .then(result => this.setState({songData: result.items}))
             .catch((err) => console.log('error', err))
     }
 
@@ -80,7 +81,7 @@ class App extends Component {
         return (
             <>
                 <Nav fetchArtistData={this.fetchArtistData}/>
-                <SearchResult artistData={this.state.artistData} albumData={this.state.albumData} fetchAlbumData={this.fetchAlbumData} fetchSongData={this.fetchSongData} songData={this.state.songData} />
+                <SearchResult artistData={this.state.artistData} albumData={this.state.albumData} fetchAlbumData={this.fetchAlbumData} fetchSongData={this.fetchSongData} songData={this.state.songData} selectedArtist={this.state.selectedArtist}/>
             </>
           );
     }

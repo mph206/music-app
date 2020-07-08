@@ -9,15 +9,16 @@ import Lyrics from './Lyrics';
 class SearchResult extends Component {
    
     state = {
-        lyrics: '',
+        lyrics: ''
     }
 
     // https://lyricsovh.docs.apiary.io/#reference/0/lyrics-of-a-song/search
     fetchLyrics = (event) =>{
-        let songName = event.target.getAttribute('value').split(' ').join('+');
-        let artist = event.target.getAttribute('track-number');
-        artist = this.props.songData[artist].artists[0].name.split(' ').join('+');
-        console.log(artist)
+        const songName = event.target.getAttribute('value')
+            .split(' / ').slice(0, 2)[0]
+            .split(' - ').slice(0, 2)[0]
+            .split(' ').join('+');
+        const artist = this.props.selectedArtist
         fetch(`https://api.lyrics.ovh/v1/${artist}/${songName}`)
             .then(response => response.json())    
             .then(data => this.setState({

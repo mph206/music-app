@@ -5,10 +5,10 @@ class Artists extends Component {
     state = {  }
 
     buildArtistData = () => {
-        return this.props.artistData.map(artist => {
+        return this.props.artistData.map((artist, index) => {
             return (
-                <div key={artist.id} value={artist.id} onClick={this.props.fetchAlbumData}>
-                    <h2 value={artist.id}>{artist.name}</h2>
+                <div key={artist.id} artist-index={index} value={artist.id} onClick={this.props.fetchAlbumData}>
+                    <h2 value={artist.id} artist-index={index}>{artist.name}</h2>
                 </div>
             )
         })
