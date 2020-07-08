@@ -13,13 +13,11 @@ class SearchResult extends Component {
     }
 
     // https://lyricsovh.docs.apiary.io/#reference/0/lyrics-of-a-song/search
-    // get the artist from when the song (or album) was clicked
     fetchLyrics = (event) =>{
         let songName = event.target.getAttribute('value').split(' ').join('+');
         let artist = event.target.getAttribute('track-number');
+        artist = this.props.songData[artist].artists[0].name.split(' ').join('+');
         console.log(artist)
-        artist= 'queen';
-        // artist= this.props.albumData
         fetch(`https://api.lyrics.ovh/v1/${artist}/${songName}`)
             .then(response => response.json())    
             .then(data => this.setState({
