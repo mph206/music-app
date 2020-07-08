@@ -7,8 +7,7 @@ class Lyrics extends Component {
         return (
             <section className={styles.lyrics}>
                 <p>Lyrics</p>
-                {/* <input type="text" onChange={this.props.fetchLyrics} /> */}
-                {this.props.lyrics}
+                {(this.props.lyrics) ? this.props.lyrics : 'Lyrics not found'}
             </section>
           );
     }

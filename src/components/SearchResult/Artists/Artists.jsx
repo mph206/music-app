@@ -31,7 +31,7 @@ class Artists extends Component {
     render() { 
         return (
             <section className={styles.artists}>
-                <p>{this.buildArtistData()}</p>
+                {this.buildArtistData()}
             </section>
           );
     }

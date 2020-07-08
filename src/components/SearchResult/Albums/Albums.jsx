@@ -17,7 +17,7 @@ class Albums extends Component {
     render() { 
         return (
             <section className={styles.albums}>
-                <p>{this.buildAlbumData()}</p>
+                {this.buildAlbumData()}
             </section>
           );
     }

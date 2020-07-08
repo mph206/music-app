@@ -16,7 +16,9 @@ class SearchResult extends Component {
     // get the artist from when the song (or album) was clicked
     fetchLyrics = (event) =>{
         let songName = event.target.getAttribute('value').split(' ').join('+');
-        let artist = this.props.artist;
+        let artist = event.target.getAttribute('track-number');
+        console.log(artist)
+        artist= 'queen';
         // artist= this.props.albumData
         fetch(`https://api.lyrics.ovh/v1/${artist}/${songName}`)
             .then(response => response.json())    
@@ -33,7 +35,7 @@ class SearchResult extends Component {
                 <Artists artistData={this.props.artistData} fetchAlbumData={this.props.fetchAlbumData}/>
                 <Albums fetchSongData={this.props.fetchSongData} albumData={this.props.albumData} />
                 <Songs songData={this.props.songData} fetchLyrics={this.fetchLyrics}/>
-                <Lyrics fetchLyrics={this.fetchLyrics} lyrics={this.state.lyrics}/>
+                <Lyrics fetchLyrics={this.fetchLyrics} lyrics={this.state.lyrics} songData={this.props.songData}/>
             </section>
           );
     }
